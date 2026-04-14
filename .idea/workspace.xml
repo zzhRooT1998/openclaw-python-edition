@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="acce666b-d11a-473d-b8d0-b46a7a9884c6" name="Changes" comment="" />
+    <list default="true" id="338cd7ed-1209-4889-87e8-44a9ec9b76bc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/agents/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/agent_event.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/builtin_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/context_loader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/heartbeat_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/memory_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/run_abort_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/session_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/skills_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/openclaw-python-edition.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/openclaw-python-edition.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agents/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/agents/agent.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "zzhRooT1998"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/zzhRooT1998/openclaw-python-edition.git",
+    "accountId": "1b066804-e799-4625-ba05-8077ad7aeff2"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
   "associatedIndex": 2
 }]]></component>
-  <component name="ProjectId" id="3C9LDR2GALmLQeUkKKHuklTlNuN" />
+  <component name="ProjectId" id="3CLL1jAGsygW0pQzbIoFfOkF8kc" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -18,7 +52,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -30,11 +66,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="acce666b-d11a-473d-b8d0-b46a7a9884c6" name="Changes" comment="" />
-      <created>1775792719021</created>
+      <changelist id="338cd7ed-1209-4889-87e8-44a9ec9b76bc" name="Changes" comment="" />
+      <created>1776159691136</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1775792719021</updated>
+      <updated>1776159691136</updated>
     </task>
     <servers />
   </component>

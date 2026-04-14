@@ -1,4 +1,16 @@
-from typing import Any
+import os
+from typing import Any, Callable
+
+from agents.agent_event import AgentEvent
+from agents.builtin_tools import Tool, BUILTIN_TOOLS
+from agents.context_loader import ContextLoader
+from agents.heartbeat_manager import HeartbeatManager
+from agents.memory_manager import MemoryManager
+from agents.run_abort_controller import RunAbortController
+from agents.session_manager import SessionManager
+from agents.skills_manager import SkillsManager
+from system_prompt import SYSTEM_PROMPT
+
 
 class ToolPolicy:
     pass
@@ -11,15 +23,18 @@ class ApprovalHandler:
 class ReasoningLevel:
     pass
 
+class ModelDef:
+    pass
 
 
 class AgentConfig:
     provider: str   #例如openai、anthropic、google等
     model: str      #与provider匹配，例如gpt-5.4、claude-opus-4.6等
-    apiKey: str
-    baseUrl: str
-    tools: list[Any]
-    toolPolicy: ToolPolicy
+    model_def: ModelDef
+    api_key: str
+    base_url: str
+    tools: list[Tool]
+    tool_policy: ToolPolicy
     agent_id: str
     sandbox: Sandbox
     approval: ApprovalConfig
@@ -51,8 +66,91 @@ class RunResult:
 class StreamFunction:
     pass
 
+class ModelDef:
+    api_key: str
+    base_url: str
+    model_id: str
+    privider: str
+    pass
+class AllowListManager:
+    pass
+
+class ToolResultGuard:
+    pass
+
 class Agent:
     stream_function: StreamFunction
+    model_def: ModelDef
+    api_key: str
+    temperature: float
+    reasoning_level: ReasoningLevel
+    agent_id: str
+    base_system_prompt: str
+    tools: list[Tool]
+    max_turn: int
+    work_dir: str
+    tool_policy: ToolPolicy
+    approval: ApprovalConfig
+    approval_handler: ApprovalHandler
+    allow_list:AllowListManager
+    context_token_size: int
+    sandbox: Sandbox
+
+    #大子系统
+    sessions: SessionManager
+    memory: MemoryManager
+    context: ContextLoader
+    skills: SkillsManager
+    heartbeat: HeartbeatManager
+
+    enable_memory: bool
+    enable_context: bool
+    enable_skills: bool
+    enable_heartbeat: bool
 
 
+    run_abort_controller: dict[str, RunAbortController]
 
+    #用户在工具执行期间发送消息入队，会在每次工具执行完后检查，若非空则跳过工具执行。队列中的消息作为下一个user turn处理
+    steering_queue: dict[str, list[str]]
+    tool_result_guard:  ToolResultGuard
+
+    listerns: set[Callable[[AgentEvent], None]]
+
+    def __init__(self, agent_config: AgentConfig):
+        self.agent_id = agent_config.agent_id or 'main'
+        self.base_system_prompt = agent_config.base_system_prompt
+        provider = agent_config.provider or 'openai'
+        model_id = agent_config.model_id or ('gpt-4o' if provider == 'openai' else None)
+        self.model_def = ModelDef()
+        self.stream_function = agent_config.stream_function or StreamFunction()
+        self.base_system_prompt = agent_config.base_system_prompt or SYSTEM_PROMPT
+
+        self.tools = agent_config.tools or BUILTIN_TOOLS
+        self.max_turn = agent_config.max_turn or 20
+        self.work_dir = (agent_config.work_dir or
+
+                         os.getcwd())
+        self.api_key = agent_config.api_key
+        self.temperature = agent_config.temperature
+        self.reasoning_level = agent_config.reasoning_level or ReasoningLevel.MEDIUM
+        self.tool_policy = agent_config.tool_policy
+        self.approval = agent_config.approval
+        self.approval_handler = agent_config.approval_handler
+        self.allow_list = AllowListManager()
+        self.context_token_size = agent_config.context_token_size or 20000
+        self.sandbox = agent_config.sandbox
+
+
+        #初始化子系统
+        self.sessions = SessionManager(agent_config.session_store_dir)
+        self.memory = MemoryManager(agent_config.memory_dir)
+        self.context = ContextLoader(self.work_dir)
+        self.skills = SkillsManager(self.work_dir)
+        self.heartbeat = HeartbeatManager(self.work_dir, agent_config.heartbeat_interval)
+
+        #功能开关
+        self.enable_memory = agent_config.enable_memory or True
+        self.enable_context = agent_config.enable_context or True
+        self.enable_skills = agent_config.enable_skills or True
+        self.enable_heartbeat = agent_config.enable_heartbeat or True
