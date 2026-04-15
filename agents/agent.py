@@ -78,6 +78,11 @@ class AllowListManager:
 class ToolResultGuard:
     pass
 
+
+def install_session_tool_result_guard(sessions):
+    pass
+
+
 class Agent:
     stream_function: StreamFunction
     model_def: ModelDef
@@ -154,3 +159,4 @@ class Agent:
         self.enable_context = agent_config.enable_context or True
         self.enable_skills = agent_config.enable_skills or True
         self.enable_heartbeat = agent_config.enable_heartbeat or True
+        self.tool_result_guard = install_session_tool_result_guard(self.sessions)
