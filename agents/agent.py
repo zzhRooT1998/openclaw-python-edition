@@ -26,6 +26,8 @@ class ReasoningLevel:
 class ModelDef:
     pass
 
+class ThinkLevel:
+    pass
 
 class AgentConfig:
     provider: str   #例如openai、anthropic、google等
