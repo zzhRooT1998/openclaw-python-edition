@@ -4,7 +4,7 @@ from agents.agent import ModelDef, StreamFunction, ThinkLevel
 from agents.builtin_tools import Tool
 from agents.event_stream import EventStream
 from agents.events import MiniAgentResult, MiniAgentEvent
-from agents.pruning import ContextPruningSettings, PruneResult, resolve_pruning_settings
+from agents.pruning import prune_context_message
 
 
 class Message:
@@ -59,15 +59,6 @@ def create_min_agent_stream() ->EventStream[MiniAgentEvent, MiniAgentResult]:
             finalText="", turns=0, totalToolCalls=0, messages=[]
         ),
     )
-CHARS_PER_TOKEN_ESTIMATE = 4
-#三层递进上下文修剪
-#soft trim -> hard clear -> message drop
-def prune_context_message(messages: list[Message], context_window_tokens: int, settings: Optional[ContextPruningSettings]) -> PruneResult:
-    settings = resolve_pruning_settings(settings)
-    context_tokens = max(1, int(context_window_tokens))
-    chat_window = context_tokens * CHARS_PER_TOKEN_ESTIMATE
-    budget_chars = max(1, int(chat_window * settings.max_history_share))
-
 
 def run_agent_loop(params: AgentLoopParam):
     stream = create_min_agent_stream()
