@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 from typing import Any, Callable
 
 from agents.agent_event import AgentEvent
@@ -67,13 +68,12 @@ class RunResult:
 
 class StreamFunction:
     pass
-
+@dataclass
 class ModelDef:
     api_key: str
     base_url: str
     model_id: str
-    privider: str
-    pass
+    provider: str
 class AllowListManager:
     pass
 
