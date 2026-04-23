@@ -143,6 +143,33 @@ def convert_messages_litellm(messages: List[Message]) -> List[dict[str, Any]]:
     return result
 
 
+def convert_tools_litellm(tools: List[Tool]) -> list[dict[str, Any]]:
+    result: List[dict[str, Any]] = []
+
+    for tool in tools:
+        name = getattr(tool, "name", None)
+        description = getattr(tool, "description", {""})
+        input_schema = (
+            getattr(tool, "input_schema", None)
+            or getattr(tool, "inputSchema", None)
+            or getattr(tool, "parameters", None)
+        )
+        if not name:
+            continue
+        result.append({
+            "type": "function",
+            "function": {
+                "name": name,
+                "description": description,
+                "parameters": input_schema or {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        })
+    return result
+
+
 def run_agent_loop(params: AgentLoopParam):
     stream = create_min_agent_stream()
 
@@ -200,7 +227,28 @@ def run_agent_loop(params: AgentLoopParam):
 
                         #构造LiteLLM message
                         litellm_messages = convert_messages_litellm(messages_for_model)
+                        request_messages = [
+                            {"role": "system", "content": system_prompt},
+                            *litellm_messages
+                        ]
 
+                        request_tools = convert_tools_litellm(tools_for_run)
+
+                        request_kwargs = {
+                            "model": model_def.model_id,
+                            "messages": request_messages,
+                            "stream": True,
+                            "api_key": api_key,
+                            "tools": request_tools,
+                            "tool_choice": "auto"
+                        }
+
+                        if model_def.base_url:
+                            request_kwargs["api_base"] = model_def.base_url
+                        if temperature is not None:
+                            request_kwargs["temperature"] = temperature
+
+                        
 
         except Exception as err:
             print(err)
